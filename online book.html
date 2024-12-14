@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking - Gentleman's Barbershop</title>
+    <style>
+      :root {
+        --primary-color: #f7e2ab;
+        --secondary-color: #8b4513;
+        --text-color: #333333;
+        --light-color: #ffffff;
+        --border-color: #dcc179;
+        --hover-color: #f0d68a;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: var(--light-color);
+        color: var(--text-color);
+      }
+
+      .header {
+        background-color: var(--primary-color);
+        padding: 1rem;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .nav-link {
+        text-decoration: none;
+        color: var(--secondary-color);
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .nav-link:hover {
+        color: #723a0e;
+      }
+
+      .nav-link.active {
+        color: var(--secondary-color);
+        font-weight: 600;
+      }
+
+      .book-now {
+        background-color: var(--secondary-color);
+        color: var(--light-color) !important;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .book-now:hover {
+        background-color: #723a0e;
+      }
+
+      .menu-toggle {
+        display: none;
+        flex-direction: column;
+        gap: 6px;
+        cursor: pointer;
+      }
+
+      .menu-toggle span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: var(--secondary-color);
+        transition: all 0.3s ease;
+      }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background-color: var(--primary-color);
+          flex-direction: column;
+          padding: 1rem;
+          gap: 1rem;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-links.active {
+          display: flex;
+        }
+
+        .menu-toggle {
+          display: flex;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+          transform: rotate(45deg) translate(8px, 6px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+          opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+          transform: rotate(-45deg) translate(7px, -6px);
+        }
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--secondary-color);
+      }
+
+      .main-content {
+        margin-top: 80px;
+        padding: 2rem;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .booking-container {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 2rem;
+        background-color: var(--light-color);
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .booking-sidebar {
+        background-color: var(--primary-color);
+        padding: 2rem;
+        border-radius: 10px;
+        position: sticky;
+        top: 100px;
+        height: fit-content;
+      }
+
+      .booking-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .step-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background-color: var(--light-color);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .step-item.active {
+        background-color: var(--secondary-color);
+        color: var(--light-color);
+      }
+
+      .step-number {
+        width: 30px;
+        height: 30px;
+        background-color: var(--secondary-color);
+        color: var(--light-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+
+      .active .step-number {
+        background-color: var(--light-color);
+        color: var(--secondary-color);
+      }
+
+      .booking-main {
+        padding: 2rem;
+        background-color: var(--light-color);
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+      }
+
+      .service-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+      }
+
+      .service-card {
+        background-color: var(--light-color);
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .service-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--secondary-color);
+      }
+
+      .service-card.selected {
+        border-color: var(--secondary-color);
+        background-color: var(--primary-color);
+      }
+
+      .service-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+      }
+
+      .service-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: var(--secondary-color);
+      }
+
+      .service-price {
+        font-weight: bold;
+        color: var(--secondary-color);
+        margin-top: 1rem;
+      }
+
+      /* New styles for steps */
+      .step-content {
+        display: none;
+      }
+
+      .step-content.active {
+        display: block;
+      }
+
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .calendar-header {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        text-align: center;
+      }
+
+      .calendar-day {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .calendar-day:hover:not(.disabled) {
+        background-color: var(--hover-color);
+      }
+
+      .calendar-day.selected {
+        background-color: var(--secondary-color);
+        color: var(--light-color);
+      }
+
+      .calendar-day.disabled {
+        background-color: #f5f5f5;
+        color: #ccc;
+        cursor: not-allowed;
+      }
+
+      .date-time-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-top: 1.5rem;
+      }
+
+      .time-slots {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+      }
+
+      .time-slot {
+        padding: 0.5rem;
+        text-align: center;
+        background-color: var(--light-color);
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .time-slot:hover {
+        background-color: var(--hover-color);
+      }
+
+      .time-slot.selected {
+        background-color: var(--secondary-color);
+        color: var(--light-color);
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        font-size: 1rem;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: var(--secondary-color);
+      }
+
+      .personal-info-form {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+
+      .form-group.full-width {
+        grid-column: span 2;
+      }
+
+      .confirmation-section {
+        text-align: center;
+        padding: 2rem;
+      }
+
+      .success-icon {
+        width: 80px;
+        height: 80px;
+        background-color: #4caf50;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 2rem;
+        color: white;
+        font-size: 2.5rem;
+      }
+
+      .confirmation-details {
+        background-color: var(--primary-color);
+        padding: 2rem;
+        border-radius: 10px;
+        margin: 2rem 0;
+        text-align: left;
+      }
+
+      .booking-id {
+        background-color: var(--secondary-color);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        display: inline-block;
+        margin-bottom: 1rem;
+      }
+
+      .summary-card {
+        background-color: var(--primary-color);
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-top: 2rem;
+      }
+
+      .summary-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+      }
+
+      .btn {
+        background-color: var(--secondary-color);
+        color: var(--light-color);
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn:hover {
+        background-color: #723a0e;
+        transform: translateY(-2px);
+      }
+
+      .btn-outline {
+        background-color: transparent;
+        border: 2px solid var(--secondary-color);
+        color: var(--secondary-color);
+      }
+
+      .btn-outline:hover {
+        background-color: var(--secondary-color);
+        color: var(--light-color);
+      }
+
+      @media (max-width: 768px) {
+        .booking-container {
+          grid-template-columns: 1fr;
+        }
+
+        .booking-sidebar {
+          position: static;
+        }
+
+        .date-time-container {
+          grid-template-columns: 1fr;
+        }
+
+        .time-slots {
+          grid-template-columns: repeat(3, 1fr);
+        }
+
+        .personal-info-form {
+          grid-template-columns: 1fr;
+        }
+
+        .form-group.full-width {
+          grid-column: span 1;
+        }
+
+        @media (max-width: 576px) {
+          .main-content {
+            padding: 1rem;
+            margin-top: 60px;
+          }
+
+          .booking-container {
+            padding: 1rem;
+          }
+
+          .service-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .service-card {
+            padding: 1rem;
+          }
+
+          .date-time-container {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+
+          .time-slots {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .nav-buttons {
+            flex-direction: column-reverse;
+            gap: 1rem;
+          }
+
+          .btn {
+            width: 100%;
+          }
+
+          .confirmation-section {
+            padding: 1rem;
+          }
+
+          .booking-sidebar {
+            border-radius: 8px;
+            padding: 1rem;
+          }
+
+          .step-item {
+            padding: 0.75rem;
+            font-size: 0.9rem;
+          }
+
+          .step-number {
+            width: 25px;
+            height: 25px;
+            font-size: 0.9rem;
+          }
+
+          h1 {
+            font-size: 1.5rem !important;
+          }
+
+          .service-title {
+            font-size: 1rem;
+          }
+        }
+
+        /* Medium devices (tablets, 768px and down) */
+        @media (max-width: 768px) {
+          .booking-container {
+            grid-template-columns: 1fr;
+          }
+
+          .booking-sidebar {
+            position: static;
+            margin-bottom: 1rem;
+          }
+
+          .personal-info-form {
+            grid-template-columns: 1fr;
+          }
+
+          .form-group.full-width {
+            grid-column: 1;
+          }
+
+          .confirmation-details {
+            padding: 1rem;
+          }
+        }
+
+        /* Large devices (laptops, 992px and down) */
+        @media (max-width: 992px) {
+          .service-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .calendar-grid {
+            gap: 0.25rem;
+          }
+
+          .calendar-day {
+            font-size: 0.9rem;
+          }
+        }
+
+        /* Additional responsive features */
+        @media (hover: none) {
+          .service-card:hover {
+            transform: none;
+          }
+
+          .btn:hover {
+            transform: none;
+          }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+          .calendar-day.disabled {
+            background-color: #2a2a2a;
+            color: #666;
+          }
+        }
+
+        /* Better touch targets for mobile */
+        @media (pointer: coarse) {
+          .time-slot {
+            padding: 0.75rem;
+          }
+
+          .calendar-day {
+            min-height: 40px;
+          }
+
+          .step-item {
+            min-height: 50px;
+          }
+
+          input,
+          select,
+          textarea {
+            min-height: 44px;
+          }
+
+          .btn {
+            min-height: 44px;
+          }
+        }
+
+        /* Print styles */
+        @media print {
+          .header,
+          .booking-sidebar,
+          .nav-buttons,
+          button {
+            display: none !important;
+          }
+
+          .booking-container {
+            display: block;
+            box-shadow: none;
+          }
+
+          .confirmation-section {
+            page-break-inside: avoid;
+          }
+
+          .booking-main {
+            border: none;
+          }
+        }
+
+        /* Fix for iOS Safari padding */
+        @supports (-webkit-touch-callout: none) {
+          input,
+          select,
+          textarea {
+            font-size: 16px;
+          }
+        }
+
+        /* High contrast support */
+        @media (prefers-contrast: high) {
+          :root {
+            --border-color: #000000;
+            --secondary-color: #000000;
+          }
+
+          .service-card {
+            border-width: 2px;
+          }
+
+          .step-item {
+            border: 1px solid var(--border-color);
+          }
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="header">
+      <nav class="nav">
+        <div class="logo">Gentleman's Barbershop</div>
+        <div class="nav-links">
+          <a href="index.html" class="nav-link active">Home</a>
+          <a href="index.html" class="nav-link">Services</a>
+          <a href="index.html" class="nav-link">About</a>
+          <a href="index.html" class="nav-link">Contact</a>
+          <a href="online book.html" class="nav-link book-now">Book Now</a>
+        </div>
+        <!-- Hamburger menu untuk mobile -->
+        <div class="menu-toggle" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </nav>
+    </header>
+
+    <main class="main-content">
+      <div class="booking-container">
+        <div class="booking-sidebar">
+          <h2 style="margin-bottom: 1.5rem; color: var(--secondary-color)">
+            Booking Steps
+          </h2>
+          <div class="booking-steps">
+            <div class="step-item active" onclick="showStep(1)">
+              <span class="step-number">1</span>
+              <span>Select Service</span>
+            </div>
+            <div class="step-item" onclick="showStep(2)">
+              <span class="step-number">2</span>
+              <span>Choose Date & Time</span>
+            </div>
+            <div class="step-item" onclick="showStep(3)">
+              <span class="step-number">3</span>
+              <span>Your Information</span>
+            </div>
+            <div class="step-item" onclick="showStep(4)">
+              <span class="step-number">4</span>
+              <span>Confirmation</span>
+            </div>
+          </div>
+
+          <div class="summary-card">
+            <h3 style="margin-bottom: 1rem; color: var(--secondary-color)">
+              Booking Summary
+            </h3>
+            <div id="summaryContent">
+              <div class="summary-item">
+                <span>Service</span>
+                <span>Basic Haircut</span>
+              </div>
+              <div class="summary-item">
+                <span>Date</span>
+                <span>-</span>
+              </div>
+              <div class="summary-item">
+                <span>Time</span>
+                <span>-</span>
+              </div>
+              <div class="summary-item" style="border-bottom: none">
+                <span>Total</span>
+                <span style="font-weight: bold; color: var(--secondary-color)"
+                  >Rp 250.000</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="booking-main">
+          <!-- Step 1: Service Selection -->
+          <div id="step1" class="step-content active">
+            <h1 style="color: var(--secondary-color); margin-bottom: 2rem">
+              Select Your Service
+            </h1>
+            <div class="service-grid">
+              <div class="service-card selected" onclick="selectService(this)">
+                <div class="service-title">Basic Haircut</div>
+                <p>Also includes basic shave, head wash, body massage, and snacks.</p>
+                <div class="service-price">Rp 250.000</div>
+              </div>
+
+              <div class="service-card" onclick="selectService(this)">
+                <div class="service-title">Standard Haircut</div>
+                <p>Also includes professional shave, deep head wash, extended body massage, and premium snacks.</p>
+                <div class="service-price">Rp 350.000</div>
+              </div>
+
+              <div class="service-card" onclick="selectService(this)">
+                <div class="service-title">Ultimate Haircut</div>
+                <p>Also includes a luxury shave, premium head wash, full body massage, and VIP snacks and drinks.</p>
+                <div class="service-price">Rp 450.000</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Date & Time Selection -->
+          <div id="step2" class="step-content">
+            <h1 style="color: var(--secondary-color); margin-bottom: 2rem">
+              Choose Date & Time
+            </h1>
+            <div class="date-time-container">
+              <div>
+                <h3>Select Date</h3>
+                <div class="calendar-header">
+                  <span>Sun</span>
+                  <span>Mon</span>
+                  <span>Tue</span>
+                  <span>Wed</span>
+                  <span>Thu</span>
+                  <span>Fri</span>
+                  <span>Sat</span>
+                </div>
+                <div class="calendar-grid" id="calendarGrid">
+                  <!-- Calendar will be generated by JavaScript -->
+                </div>
+              </div>
+
+              <div>
+                <h3>Select Time</h3>
+                <div class="time-slots">
+                  <div class="time-slot" onclick="selectTime(this)">09:00</div>
+                  <div class="time-slot" onclick="selectTime(this)">10:00</div>
+                  <div class="time-slot" onclick="selectTime(this)">11:00</div>
+                  <div class="time-slot" onclick="selectTime(this)">13:00</div>
+                  <div class="time-slot" onclick="selectTime(this)">14:00</div>
+                  <div class="time-slot" onclick="selectTime(this)">15:00</div>
+                  <div class="time-slot" onclick="selectTime(this)">16:00</div>
+                  <div class="time-slot" onclick="selectTime(this)">17:00</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Personal Information -->
+          <div id="step3" class="step-content">
+            <h1 style="color: var(--secondary-color); margin-bottom: 2rem">
+              Your Information
+            </h1>
+            <form class="personal-info-form" id="personalInfoForm">
+              <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" required />
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" required />
+              </div>
+              <div class="form-group full-width">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" required />
+              </div>
+              <div class="form-group full-width">
+                <label for="notes">Special Service Requests (Optional)</label>
+                <textarea id="notes" rows="4"></textarea>
+              </div>
+            </form>
+          </div>
+
+          <!-- Step 4: Confirmation -->
+          <div id="step4" class="step-content">
+            <div class="confirmation-section">
+              <div class="success-icon">✓</div>
+              <h1 style="color: var(--secondary-color)">Booking Confirmed!</h1>
+              <p style="margin: 1rem 0">
+                Your appointment has been successfully scheduled.
+              </p>
+
+              <div class="confirmation-details">
+                <div class="booking-id">Booking ID: GB12345</div>
+                <div id="confirmationDetails">
+                  <!-- Will be populated by JavaScript -->
+                </div>
+              </div>
+
+              <p>A confirmation email has been sent to your email address.</p>
+
+              <div
+                style="
+                  display: flex;
+                  gap: 1rem;
+                  justify-content: center;
+                  margin-top: 2rem;
+                "
+              >
+                <button class="btn" onclick="window.print()">
+                  Print Details
+                </button>
+                <button class="btn btn-outline" onclick="location.href='/'">
+                  Return to Home
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="nav-buttons">
+            <button
+              class="btn btn-outline"
+              id="prevBtn"
+              onclick="previousStep()"
+              style="display: none"
+            >
+              Previous
+            </button>
+            <button class="btn" id="nextBtn" onclick="nextStep()">
+              Continue
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      let currentStep = 1;
+      const totalSteps = 4;
+
+      // Initialize on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        initializeCalendar();
+        showStep(1);
+        updateSummary();
+      });
+
+      function showStep(step) {
+        // Hide all steps
+        document.querySelectorAll(".step-content").forEach((el) => {
+          el.classList.remove("active");
+          el.style.display = "none";
+        });
+
+        // Show current step
+        const currentStepElement = document.getElementById(`step${step}`);
+        currentStepElement.classList.add("active");
+        currentStepElement.style.display = "block";
+
+        // Update progress indicators
+        document.querySelectorAll(".step-item").forEach((el, index) => {
+          if (index + 1 <= step) {
+            el.classList.add("active");
+          } else {
+            el.classList.remove("active");
+          }
+        });
+
+        // Update navigation buttons
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+
+        prevBtn.style.display = step === 1 ? "none" : "block";
+        nextBtn.textContent =
+          step === totalSteps ? "Confirm Booking" : "Continue";
+
+        currentStep = step;
+      }
+
+      function nextStep() {
+        if (validateCurrentStep()) {
+          if (currentStep < totalSteps) {
+            showStep(currentStep + 1);
+          } else {
+            handleConfirmation();
+          }
+        }
+      }
+
+      function previousStep() {
+        if (currentStep > 1) {
+          showStep(currentStep - 1);
+        }
+      }
+
+      function validateCurrentStep() {
+        switch (currentStep) {
+          case 1:
+            if (!document.querySelector(".service-card.selected")) {
+              alert("Please select a service");
+              return false;
+            }
+            return true;
+          case 2:
+            if (
+              !document.querySelector(".calendar-day.selected") ||
+              !document.querySelector(".time-slot.selected")
+            ) {
+              alert("Please select both date and time");
+              return false;
+            }
+            return true;
+          case 3:
+            const form = document.getElementById("personalInfoForm");
+            if (!form.checkValidity()) {
+              alert("Please fill in all required fields");
+              return false;
+            }
+            return true;
+          default:
+            return true;
+        }
+      }
+
+      function selectService(card) {
+        document
+          .querySelectorAll(".service-card")
+          .forEach((c) => c.classList.remove("selected"));
+        card.classList.add("selected");
+        updateSummary();
+      }
+
+      function selectTime(slot) {
+        document
+          .querySelectorAll(".time-slot")
+          .forEach((s) => s.classList.remove("selected"));
+        slot.classList.add("selected");
+        updateSummary();
+      }
+
+      function updateSummary() {
+        const selectedService = document.querySelector(
+          ".service-card.selected"
+        );
+        const selectedDate = document.querySelector(".calendar-day.selected");
+        const selectedTime = document.querySelector(".time-slot.selected");
+
+        const summaryHtml = `
+                <div class="summary-item">
+                    <span>Service</span>
+                    <span>${
+                      selectedService
+                        ? selectedService.querySelector(".service-title")
+                            .textContent
+                        : "-"
+                    }</span>
+                </div>
+                <div class="summary-item">
+                    <span>Date</span>
+                    <span>${
+                      selectedDate
+                        ? selectedDate.getAttribute("data-date")
+                        : "-"
+                    }</span>
+                </div>
+                <div class="summary-item">
+                    <span>Time</span>
+                    <span>${
+                      selectedTime ? selectedTime.textContent : "-"
+                    }</span>
+                </div>
+                <div class="summary-item" style="border-bottom: none;">
+                    <span>Total</span>
+                    <span style="font-weight: bold; color: var(--secondary-color);">
+                        ${
+                          selectedService
+                            ? selectedService.querySelector(".service-price")
+                                .textContent
+                            : "-"
+                        }
+                    </span>
+                </div>
+            `;
+
+        document.getElementById("summaryContent").innerHTML = summaryHtml;
+      }
+
+      function handleConfirmation() {
+        const selectedService = document.querySelector(
+          ".service-card.selected"
+        );
+        const selectedDate = document.querySelector(".calendar-day.selected");
+        const selectedTime = document.querySelector(".time-slot.selected");
+
+        const confirmationHtml = `
+                <div class="summary-item">
+                    <span>Name</span>
+                    <span>${document.getElementById("fullName").value}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Phone</span>
+                    <span>${document.getElementById("phone").value}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Email</span>
+                    <span>${document.getElementById("email").value}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Service</span>
+                    <span>${
+                      selectedService.querySelector(".service-title")
+                        .textContent
+                    }</span>
+                </div>
+                <div class="summary-item">
+                    <span>Date</span>
+                    <span>${selectedDate.getAttribute("data-date")}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Time</span>
+                    <span>${selectedTime.textContent}</span>
+                </div>
+                <div class="summary-item" style="border-bottom: none;">
+                    <span>Total</span>
+                    <span>${
+                      selectedService.querySelector(".service-price")
+                        .textContent
+                    }</span>
+                </div>
+            `;
+
+        document.getElementById("confirmationDetails").innerHTML =
+          confirmationHtml;
+        showStep(4);
+      }
+
+      function initializeCalendar() {
+        const calendarGrid = document.getElementById("calendarGrid");
+        const today = new Date();
+        const currentMonth = today.getMonth();
+        const currentYear = today.getFullYear();
+        const daysInMonth = new Date(
+          currentYear,
+          currentMonth + 1,
+          0
+        ).getDate();
+        const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+
+        // Clear existing calendar
+        calendarGrid.innerHTML = "";
+
+        // Add empty cells for days before the first day of the month
+        for (let i = 0; i < firstDay; i++) {
+          const emptyDay = document.createElement("div");
+          emptyDay.className = "calendar-day disabled";
+          calendarGrid.appendChild(emptyDay);
+        }
+
+        // Add days of the month
+        for (let i = 1; i <= daysInMonth; i++) {
+          const day = document.createElement("div");
+          day.className = "calendar-day";
+          day.textContent = i;
+
+          const date = new Date(currentYear, currentMonth, i);
+          const formattedDate = date.toISOString().split("T")[0];
+          day.setAttribute("data-date", formattedDate);
+
+          if (date < today) {
+            day.classList.add("disabled");
+          } else {
+            day.addEventListener("click", function () {
+              document
+                .querySelectorAll(".calendar-day")
+                .forEach((d) => d.classList.remove("selected"));
+              this.classList.add("selected");
+              updateSummary();
+            });
+          }
+
+          calendarGrid.appendChild(day);
+        }
+
+        function toggleMenu() {
+          const navLinks = document.querySelector(".nav-links");
+          const menuToggle = document.querySelector(".menu-toggle");
+          navLinks.classList.toggle("active");
+          menuToggle.classList.toggle("active");
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener("click", function (e) {
+          const navLinks = document.querySelector(".nav-links");
+          const menuToggle = document.querySelector(".menu-toggle");
+          if (!e.target.closest(".nav")) {
+            navLinks.classList.remove("active");
+            menuToggle.classList.remove("active");
+          }
+        });
+
+        // Close menu when clicking a nav link
+        document.querySelectorAll(".nav-link").forEach((link) => {
+          link.addEventListener("click", () => {
+            const navLinks = document.querySelector(".nav-links");
+            const menuToggle = document.querySelector(".menu-toggle");
+            navLinks.classList.remove("active");
+            menuToggle.classList.remove("active");
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

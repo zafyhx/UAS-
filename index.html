@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <title>Gentleman's Barbershop</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      :root {
+        --primary-color: #f7e2ab;
+        --dark-color: #333333;
+        --light-color: #ffffff;
+      }
+
+      body {
+        background-color: var(--light-color);
+      }
+
+      /* Header Styles */
+      header {
+        background-color: var(--primary-color);
+        padding: 1rem;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      nav {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--dark-color);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--dark-color);
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      /* Style khusus untuk Book Now */
+      .nav-links a:last-child {
+        background-color: #8b4513;
+        color: var(--light-color);
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+
+      .nav-links a:last-child:hover {
+        background-color: #723a0e;
+      }
+
+      /* Hover effect untuk link lainnya */
+      .nav-links a:not(:last-child):hover {
+        color: #8b4513;
+      }
+
+      /* Hero Section */
+      .hero {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        overflow: hidden;
+        padding-top: 60px;
+      }
+
+      .hero-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("https://images.unsplash.com/photo-1622288432450-277d0fef5ed6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80");
+        background-size: cover;
+        background-position: center;
+        filter: brightness(0.7);
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+        padding: 2rem;
+        text-align: center;
+      }
+
+      .hero-content h1 {
+        font-size: 3.5rem;
+        color: white;
+        line-height: 1.2;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .hero-content p {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      }
+
+      .hero-buttons {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        margin-top: 2rem;
+      }
+
+      .cta-button {
+        padding: 1.2rem 3rem;
+        background-color: #f7e2ab;
+        color: #333333;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .cta-button:hover {
+        transform: translateY(-3px);
+        background-color: #ffe9b7;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .video-button {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        color: var(--light-color);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+      }
+
+      .video-button:hover {
+        transform: translateX(5px);
+      }
+
+      .video-button i {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #f7e2ab;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-style: normal;
+        font-size: 1.4rem;
+        transition: all 0.3s ease;
+        color: #333333;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .video-button:hover i {
+        background-color: #ffe9b7;
+        transform: scale(1.1);
+      }
+
+      @media (max-width: 768px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-image {
+          height: 300px;
+        }
+
+        .hero-content {
+          padding: 2rem;
+        }
+
+        .hero-content h1 {
+          font-size: 2.5rem;
+        }
+      }
+
+      .cta-button {
+        padding: 1rem 2rem;
+        background-color: var(--primary-color);
+        color: var(--dark-color);
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: transform 0.3s;
+      }
+
+      .cta-button:hover {
+        transform: scale(1.05);
+      }
+
+      /* Services Section */
+      .services {
+        padding: 5rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+      }
+
+      .service-card {
+        background-color: var(--primary-color);
+        padding: 2rem;
+        border-radius: 10px;
+        text-align: center;
+        transition: transform 0.3s;
+      }
+
+      .service-card img {
+        width: 100%; /* Membuat gambar memenuhi lebar card */
+        height: 250px; /* Tetapkan tinggi */
+        object-fit: cover; /* Memastikan gambar terisi penuh tanpa distorsi */
+        border-radius: 10px; /* Memberikan sudut bulat */
+      }
+
+      .service-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .service-card h3 {
+        margin: 1rem 0;
+      }
+
+      .price {
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-top: 1rem;
+      }
+
+      /* Pricing Section */
+      .pricing {
+        padding: 8rem 4rem;
+        background-color: var(--light-color);
+      }
+
+      .pricing-title {
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      .pricing-subtitle {
+        color: #000000;
+        font-size: 1.2rem;
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .pricing-card {
+        background-color: #fff;
+        border-radius: 15px;
+        padding: 2.5rem;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .pricing-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .pricing-card h3 {
+        font-size: 1.8rem;
+        color: var(--dark-color);
+      }
+
+      .pricing-card .subtitle {
+        color: #666;
+        font-size: 1.1rem;
+        margin-top: -1rem;
+      }
+
+      .pricing-card .price {
+        font-size: 2.5rem;
+        color: var(--dark-color);
+        font-weight: bold;
+        margin: 1rem 0;
+      }
+
+      .pricing-card .price.highlight {
+        color: #8b4513;
+      }
+
+      .pricing-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+      }
+
+      .pricing-card ul li {
+        color: #666;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .pricing-card ul li:last-child {
+        border-bottom: none;
+      }
+
+      .book-now-btn {
+        display: inline-block;
+        padding: 1rem 2rem;
+        background-color: #8b4513;
+        color: var(--light-color);
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin-top: auto;
+      }
+
+      .book-now-btn:hover {
+        background-color: #723a0e;
+      }
+
+      .book-now-btn.dark {
+        background-color: var(--dark-color);
+      }
+
+      .book-now-btn.dark:hover {
+        background-color: #444;
+      }
+
+      @media (max-width: 768px) {
+        .pricing {
+          padding: 4rem 1.5rem;
+        }
+
+        .pricing-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+
+        .pricing-card {
+          padding: 2rem;
+        }
+      }
+
+      /* Haircut Gallery Styling */
+.haircut-gallery {
+  padding: 5rem 2rem;
+  background-color: var(--light-color);
+}
+
+.featured-slider {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  overflow: hidden;
+}
+
+.slider-container {
+  position: relative;
+  aspect-ratio: 16/9;
+}
+
+.slider-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.slider-image.active {
+  opacity: 1;
+}
+
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s;
+}
+
+.slider-btn:hover {
+  background: white;
+}
+
+.prev {
+  left: 20px;
+}
+
+.next {
+  right: 20px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.gallery-item {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .slider-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  
+  .haircut-gallery {
+    padding: 3rem 1rem;
+  }
+}
+
+      .video-section {
+        position: relative;
+        width: 100%;
+        height: 80vh;
+        overflow: hidden;
+        margin: 4rem 0;
+      }
+
+      .background-video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        transform: translate(-50%, -50%);
+        object-fit: cover;
+      }
+
+      .video-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: var(--light-color);
+        text-align: center;
+        padding: 2rem;
+      }
+
+      .video-overlay h2 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .video-overlay p {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+      }
+
+      @media (max-width: 768px) {
+        .video-section {
+          height: 60vh;
+        }
+
+        .video-overlay h2 {
+          font-size: 2rem;
+        }
+
+        .video-overlay p {
+          font-size: 1.2rem;
+        }
+      }
+
+      .contact {
+        background-color: var(--dark-color);
+        color: var(--light-color);
+        padding: 5rem 2rem;
+      }
+
+      .contact-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      .contact {
+        background-color: var(--dark-color);
+        color: var(--light-color);
+        padding: 5rem 2rem;
+      }
+
+      .contact-container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .contact-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        margin-top: 3rem;
+      }
+
+      .contact-card {
+        background-color: rgba(255, 255, 255, 0.05);
+        padding: 2rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .contact-card h3 {
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+      }
+
+      .info-item {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        align-items: flex-start;
+      }
+
+      .info-item i {
+        color: var(--primary-color);
+        font-size: 1.2rem;
+        margin-top: 0.3rem;
+      }
+
+      .info-item p {
+        margin: 0.2rem 0;
+      }
+
+      .hours-grid {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .day {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .day.holiday {
+        color: var(--primary-color);
+      }
+
+      .social-links {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .social-link {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        color: var(--light-color);
+        text-decoration: none;
+        padding: 0.5rem;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+      }
+
+      .social-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        transform: translateX(5px);
+      }
+
+      .social-link i {
+        color: var(--primary-color);
+        font-size: 1.2rem;
+      }
+
+      .contact-form {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .form-group {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .form-group label {
+        font-size: 0.9rem;
+        color: var(--primary-color);
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 0.8rem;
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        color: var(--light-color);
+        font-size: 1rem;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+      }
+
+      .submit-btn {
+        background-color: var(--primary-color);
+        color: var(--dark-color);
+        padding: 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        background-color: #e6d19a;
+        transform: translateY(-2px);
+      }
+
+      .form-group select,
+      .form-group select option {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: var(--light-color);
+        padding: 0.8rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        width: 100%;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+
+      .form-group select option {
+        background-color: var(
+          --dark-color
+        ); /* Background gelap untuk dropdown */
+        color: var(--light-color); /* Teks putih */
+      }
+
+      /* Styling untuk placeholder */
+      .form-group select:invalid,
+      .form-group select option[value=""] {
+        color: rgba(255, 255, 255, 0.5); /* Warna abu-abu untuk placeholder */
+      }
+
+      /* Styling saat focus */
+      .form-group select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+      }
+
+      /* Styling untuk input dan textarea */
+      .form-group input,
+      .form-group textarea {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: var(--light-color);
+        padding: 0.8rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        width: 100%;
+        font-size: 1rem;
+      }
+
+      /* Styling untuk placeholder pada input dan textarea */
+      .form-group input::placeholder,
+      .form-group textarea::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      /* Styling saat hover */
+      .form-group select:hover,
+      .form-group input:hover,
+      .form-group textarea:hover {
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+
+      /* Styling saat focus */
+      .form-group select:focus,
+      .form-group input:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        background-color: rgba(255, 255, 255, 0.15);
+      }
+
+      /* Styling khusus untuk select arrow */
+      .form-group select {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1em;
+        padding-right: 2.5rem;
+      }
+
+      /* Tambahan styling untuk label */
+      .form-group label {
+        font-size: 0.9rem;
+        color: var(--primary-color);
+        margin-bottom: 0.3rem;
+        font-weight: 500;
+      }
+
+      @media (max-width: 768px) {
+        .contact-content {
+          grid-template-columns: 1fr;
+        }
+
+        .info-item {
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .social-link {
+          padding: 0.75rem;
+        }
+      }
+
+      /* Footer */
+      footer {
+        background-color: var(--primary-color);
+        color: var(--dark-color);
+        text-align: center;
+        padding: 1rem;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+        }
+
+        .hero-content h1 {
+          font-size: 2rem;
+        }
+
+        .hero-content p {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">Gentleman's Barbershop</div>
+        <div class="menu-toggle" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="#services">Services</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#contact">Contact</a>
+          <a href="online book.html">Book Now</a>
+        </div>
+      </nav>
+    </header>
+
+    <section class="hero" id="home">
+      <div class="hero-image"></div>
+      <div class="hero-content">
+        <h1>
+          Kami Tidak Hanya Memotong Rambut, Kami Menciptakan Kepercayaan Diri
+        </h1>
+        <p>
+          Sebagai ahli penataan rambut dengan pengalaman 10 tahun, kami
+          berkomitmen menghadirkan layanan premium. Presisi dan detail adalah
+          standar kami dalam menciptakan gaya rambut yang sesuai dengan karakter
+          Anda.
+        </p>
+        <div class="hero-buttons">
+          <a href="online book.html" class="cta-button">Book Now</a>
+          <a href="#services" class="video-button">
+            <i>→</i>
+            Our Services
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="services" id="services">
+      <h2 class="section-title">Our Service</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <img src="facial-for-men.jpg" alt="Facial Men" />
+          <h3>Facial For Men</h3>
+          <p>
+            Perawatan khusus kulit wajah pria yang membersihkan, mengeksfoliasi,
+            dan merawat kulit.
+          </p>
+          <div class="price">Rp 250.000</div>
+        </div>
+        <div class="service-card">
+          <img src="beard-grooming-men.jpg" alt="Beard Trim" />
+          <h3>Beard Grooming Premium</h3>
+          <p>
+            Layanan perawatan jenggot komprehensif yang mencakup pencukuran
+            presisi, pembentukan, dan styling.
+          </p>
+          <div class="price">Rp 200.000</div>
+        </div>
+        <div class="service-card">
+          <img src="head-spa-men.png" alt="Hair Styling" />
+          <h3>Head Spa Treatment</h3>
+          <p>
+            Perawatan intensif untuk kesehatan kulit kepala dan akar rambut,
+            termasuk pijat dan terapi uap.
+          </p>
+          <div class="price">Rp 300.000</div>
+        </div>
+        <div class="service-card">
+          <img src="hair-color-men.jpg" alt="Complete Package" />
+          <h3>Hair Color & Styling</h3>
+          <p>
+            Layanan pewarnaan dan styling rambut profesional, termasuk
+            konsultasi dan styling sesuai trend.
+          </p>
+          <div class="price">Rp 450.000</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="haircut-gallery">
+        <h2 class="section-title">Our Haircut Results</h2>
+        <div class="featured-slider">
+          <div class="slider-container">
+            <img src="process-1.jpg" alt="Haircut 1" class="slider-image active">
+            <img src="process-2.jpg" alt="Haircut 2" class="slider-image">
+            <img src="process-3.jpg" alt="Haircut 3" class="slider-image">
+            <!-- Tambahkan gambar lainnya sesuai kebutuhan -->
+          </div>
+          <button class="slider-btn prev">&#10094;</button>
+          <button class="slider-btn next">&#10095;</button>
+        </div>
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <img src="haircut-result-1.jpg" alt="Haircut 1">
+          </div>
+          <div class="gallery-item">
+            <img src="haircut-result-2.jpg" alt="Haircut 2">
+          </div>
+          <div class="gallery-item">
+            <img src="haircut-result-3.jpg" alt="Haircut 3">
+          </div>
+          <div class="gallery-item">
+            <img src="haircut-result-4.jpg" alt="Haircut 3">
+          </div>
+        </div>
+      </section>
+
+    <section class="video-section">
+      <video autoplay muted loop class="background-video">
+        <source src="barber video.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div class="video-overlay">
+        <h2>Mastery in Personal Care</h2>
+        <p>Where Style Meets Sophistication</p>
+      </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+      <h4 class="pricing-subtitle">Pricing Plan</h4>
+      <h2 class="pricing-title section-title">Choose Your Favorite Package</h2>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <h3>Basic Hair Cut</h3>
+          <div class="subtitle">Standard Package</div>
+          <div class="price">Rp 250.000</div>
+          <ul>
+            <li>Basic Hair Cut</li>
+            <li>Basic Shave</li>
+            <li>Basic Head Wash</li>
+            <li>Basic Body Massage</li>
+            <li>Basic Snacks</li>
+          </ul>
+          <a href="online book.html" class="book-now-btn">Book Now</a>
+        </div>
+        <div class="pricing-card">
+          <h3>Standard Hair Cut</h3>
+          <div class="subtitle">Standard Package</div>
+          <div class="price">Rp 350.000</div>
+          <ul>
+            <li>Standard Hair Cut</li>
+            <li>Professional Shave</li>
+            <li>Deep Head Wash</li>
+            <li>Extended Body Massage</li>
+            <li>Premium Snacks</li>
+          </ul>
+          <a href="online book.html" class="book-now-btn">Book Now</a>
+        </div>
+        <div class="pricing-card">
+          <h3>Ultimate Hair Cut</h3>
+          <div class="subtitle">Premium Package</div>
+          <div class="price highlight">Rp 450.000</div>
+          <ul>
+            <li>Premium Hair Cut</li>
+            <li>Luxury Shave</li>
+            <li>Premium Head Wash</li>
+            <li>Full Body Massage</li>
+            <li>VIP Snacks & Drinks</li>
+          </ul>
+          <a href="online book.html" class="book-now-btn">Book Now</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="contact-container">
+        <h2 class="section-title">Contact Us</h2>
+
+        <div class="contact-content">
+          <!-- Informasi Kontak -->
+          <div class="contact-info">
+            <div class="contact-card">
+              <h3>Location</h3>
+              <div class="info-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div>
+                  <p>Jl. Palagan Tentara Pelajar No 7.8</p>
+                  <p>Jakarta Selatan</p>
+                  <p>DKI Jakarta, Indonesia 12345</p>
+                </div>
+              </div>
+              <div class="info-item">
+                <i class="fas fa-phone"></i>
+                <div>
+                  <p>Phone: (021) 123-4567</p>
+                  <p>WhatsApp: +62 812-3456-7890</p>
+                </div>
+              </div>
+              <div class="info-item">
+                <i class="fas fa-envelope"></i>
+                <div>
+                  <p>Email: info@gentlemansbarbershop.com</p>
+                  <p>Website: www.gentlemansbarbershop.com</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Jam Operasional -->
+            <div class="contact-card">
+              <h3>Opening Hours</h3>
+              <div class="hours-grid">
+                <div class="day">
+                  <span>Monday - Friday</span>
+                  <span>09:00 - 20:00</span>
+                </div>
+                <div class="day">
+                  <span>Saturday</span>
+                  <span>09:00 - 18:00</span>
+                </div>
+                <div class="day">
+                  <span>Sunday</span>
+                  <span>10:00 - 16:00</span>
+                </div>
+                <div class="day holiday">
+                  <span>Public Holidays</span>
+                  <span>10:00 - 15:00</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Social Media -->
+            <div class="contact-card">
+              <h3>Follow Us</h3>
+              <div class="social-links">
+                <a href="#" class="social-link">
+                  <i class="fab fa-instagram"></i>
+                  <span>@gentlemans.barber</span>
+                </a>
+                <a href="#" class="social-link">
+                  <i class="fab fa-facebook"></i>
+                  <span>Gentleman's Barbershop</span>
+                </a>
+                <a href="#" class="social-link">
+                  <i class="fab fa-tiktok"></i>
+                  <span>@gentlemansbarber</span>
+                </a>
+                <a href="#" class="social-link">
+                  <i class="fab fa-youtube"></i>
+                  <span>Gentleman's Barber Official</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Kontak -->
+          <div class="contact-form-container">
+            <div class="contact-card">
+              <h3>Send us a Message</h3>
+              <form class="contact-form">
+                <div class="form-group">
+                  <label for="name">Full Name</label>
+                  <input type="text" id="name" required />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" id="email" required />
+                </div>
+                <div class="form-group">
+                  <label for="subject">Subject</label>
+                  <select id="subject" required>
+                    <option value="">Select subject...</option>
+                    <option value="inquiry">General Inquiry</option>
+                    <option value="appointment">Appointment Question</option>
+                    <option value="feedback">Feedback</option>
+                    <option value="career">Career Opportunity</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="message">Message</label>
+                  <textarea id="message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>&copy; 2024 Gentleman's Barbershop. Hak Cipta Dilindungi.</p>
+    </footer>
+
+    <script>
+      // Background images array
+      const backgroundImages = [
+        "https://images.unsplash.com/photo-1622288432450-277d0fef5ed6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1635273051437-03c9c1e4fc0a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1621605815971-fbc98d665033?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
+      ];
+
+      let currentBgIndex = 0;
+      const heroSection = document.querySelector(".hero");
+
+      // Function to change background
+      function changeBackground() {
+        currentBgIndex = (currentBgIndex + 1) % backgroundImages.length;
+        heroSection.style.backgroundImage = `url('${backgroundImages[currentBgIndex]}')`;
+      }
+
+      // Change background every 5 seconds
+      setInterval(changeBackground, 5000);
+
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
+          });
+        });
+      });
+
+      // Mobile menu toggle
+      function toggleMenu() {
+        const navLinks = document.querySelector(".nav-links");
+        const menuToggle = document.querySelector(".menu-toggle");
+        navLinks.classList.toggle("active");
+
+        // Animate hamburger menu
+        const spans = menuToggle.getElementsByTagName("span");
+        spans[0].style.transform = navLinks.classList.contains("active")
+          ? "rotate(45deg) translate(5px, 5px)"
+          : "none";
+        spans[1].style.opacity = navLinks.classList.contains("active")
+          ? "0"
+          : "1";
+        spans[2].style.transform = navLinks.classList.contains("active")
+          ? "rotate(-45deg) translate(7px, -7px)"
+          : "none";
+      }
+
+      // Close menu when clicking a link
+      document.querySelectorAll(".nav-links a").forEach((link) => {
+        link.addEventListener("click", () => {
+          const navLinks = document.querySelector(".nav-links");
+          const menuToggle = document.querySelector(".menu-toggle");
+          if (navLinks.classList.contains("active")) {
+            toggleMenu();
+          }
+        });
+      });
+
+      // Hide menu on scroll
+      let lastScroll = 0;
+      window.addEventListener("scroll", () => {
+        const header = document.querySelector("header");
+        const currentScroll = window.pageYOffset;
+
+        if (currentScroll <= 0) {
+          header.style.boxShadow = "0 2px 5px rgba(0,0,0,0.1)";
+          return;
+        }
+
+        if (currentScroll > lastScroll) {
+          // Scrolling down
+          header.style.transform = "translateY(-100%)";
+        } else {
+          // Scrolling up
+          header.style.transform = "translateY(0)";
+          header.style.boxShadow = "0 2px 10px rgba(0,0,0,0.1)";
+        }
+
+        lastScroll = currentScroll;
+      });
+
+      // Gallery Slider
+document.addEventListener('DOMContentLoaded', function() {
+  const sliderImages = document.querySelectorAll('.slider-image');
+  const prevBtn = document.querySelector('.prev');
+  const nextBtn = document.querySelector('.next');
+  let currentIndex = 0;
+
+  function showImage(index) {
+    sliderImages.forEach(img => img.classList.remove('active'));
+    sliderImages[index].classList.add('active');
+  }
+
+  function nextImage() {
+    currentIndex = (currentIndex + 1) % sliderImages.length;
+    showImage(currentIndex);
+  }
+
+  function prevImage() {
+    currentIndex = (currentIndex - 1 + sliderImages.length) % sliderImages.length;
+    showImage(currentIndex);
+  }
+
+  // Auto slide
+  setInterval(nextImage, 5000);
+
+  // Button controls
+  if(prevBtn && nextBtn) {
+    prevBtn.addEventListener('click', prevImage);
+    nextBtn.addEventListener('click', nextImage);
+  }
+});
+
+      // Reservation form handling
+      const bookingForm = document.getElementById("bookingForm");
+      const modal = document.getElementById("confirmationModal");
+
+      bookingForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Validate date
+        const selectedDate = new Date(document.getElementById("date").value);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (selectedDate < today) {
+          alert("Mohon pilih tanggal mulai hari ini atau setelahnya.");
+          return;
+        }
+
+        // Show confirmation modal
+        modal.style.display = "flex";
+
+        // Reset form
+        bookingForm.reset();
+      });
+
+      // Close modal function
+      function closeModal() {
+        modal.style.display = "none";
+      }
+
+      // Close modal when clicking outside
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          closeModal();
+        }
+      };
+      
+    </script>
+  </body>
+</html>
